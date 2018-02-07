@@ -292,6 +292,6 @@ library(tidyverse)
 
 3.: Válasszatokk i egy alacsony mérési szintű változót (pl iskolai végzettség). Írjatok gy függvényt, ami az egyes kategóriákat összevonja, és egy új kategorizálást ad vissza. Például az `c("MSc", "BA", "Érettségi", "Elemi")` értékekre az `c("felsőfokú", "felsőfokú", "középfokú", "alapfokú")` értékeket adja vissza.
 
-A kiinduló adatokat és a működő szkriptet küldjétek el egy zipben nekünk (`atajti@gmail.com`, `tiemka@gmail.com`).
+A kiinduló adatokat és a működő szkriptet küldjétek el egy zipben nekünk.
 
 Jó munkát!
