@@ -10,7 +10,7 @@ output: html_document
 "R is a free software environment for statistical computing and graphics." Statisztikusok számára készült programozási nyelv, az alap statisztikai függvények a frissen telepített R környezetben elérhetőek:
 ![Nyers R konzol](pictures/base_r.png)
 
-Az r-project.ork-ról letölthető R azonban fapados. Sok kódolást segítő környezet (IDE) létezik, azonban kifejezetten az R köré épült, rengeteg R-specifikus segítséggel és kiegészítő funcióval:
+Az r-project.org-ról letölthető R azonban fapados. Sok kódolást segítő környezet (IDE) létezik, azonban kifejezetten az R köré épült, rengeteg R-specifikus segítséggel és kiegészítő funcióval:
 ![Rstudio felület](pictures/Rstudio.png)
 
 A kódolást segítő funciók között van az instant help, az automatikus kódformázás, szintaktikai elenőrzés, Markdown dokumentumok fordítása, Shiny alkalmazások fejlesztésének segítése, stb.
@@ -41,6 +41,9 @@ Alapvető műveletek elvégzésére:
 Különböző adatok és eredmények tárolására:
 
 ```{r adattipusok}
+logikai <- TRUE
+logikai
+
 szam <- 1
 szam
 
@@ -81,6 +84,53 @@ variancia(1:4) == var(1:4)
 
 ```
 
+Az R egyik nagy erőssége, hogy ha nem találjuk meg a szükséges statisztikai eljárást a felkínált függvények közt, megírhatjuk magunk is őket, illetve akár komolyabb programokat is készíthetünk a felkínált programozási alapelemekkel:
+
+- sokszor egymás után elvégeztethetjük a számítógéppel ugyanazt a feladatot:
+
+```{r szorzas}
+szorzas <- function(x, n){
+  eredmeny <- 0
+  for(i in seq(n)){
+    eredmeny <- eredmeny + x
+  }
+  return(eredmeny)
+}
+```
+
+- az eljárásban döntéseket hozhatunk bizonyos feltételek alapján
+
+```{r dontes}
+paros_e <- function(n){
+  if(n %% 2 == 0){
+    return("paros")
+  } else {
+    return("paratlan")
+  }
+}
+paros_e(5)
+paros_e(10)
+```
+
+*Feladat: Írjatok egy függvényt, ami 1-től 20-ig végignézi a számokat. Ha hárommal osztható, kiírja hogy `Fizz`, ha öttel, kiírja hogy `Buzz`, ha mindkettővel, kiírja hogy `FizzBuzz`.*
+
+```{r FizzBuzz, echo = FALSE, results = FALSE}
+for(i in 1:20){
+  r <- NULL
+  if(i %% 5 == 0 & i %% 3 == 0){
+    r <- "FizzBuzz"
+  } else if(i %% 3 == 0){
+    r <- "Fizz"
+  } else if(i %% 5 == 0){
+    r <-  "Buzz"
+  } else {
+    r <- i
+  }
+  print(r)
+}
+```
+
+
 Véletlen számok generálására:
 
 ```{r veletlenek}
@@ -100,14 +150,24 @@ hist(binomialis_eloszlas,
 plot(density(binomialis_eloszlas))
 ```
 
-*Feladat: Nézd meg, mekkora egy tetszőleges paraméterekkel generált normáleloszlás átlagának eltérése a várható értékétől!*
+*Feladat: Nézzétek meg, mekkora egy tetszőleges paraméterekkel generált normáleloszlás átlagának eltérése a várható értékétől! Futtassátok le a függvényt többször, mit tapasztaltok? Módosítsátok a paramétereket, és futtassátok le úgy a függvényt, mire számítunk?*
 
 ```{r varhato_ertek, echo = FALSE, results = FALSE}
 kulonbseg <- abs(50 - mean(rnorm(1000, 50, 20)))
 kulonbseg
 ```
 
-Szövegeket is tud kezelni:
+Ha random számokat generálunk, és azt szeretnénk, hogy az eredményeink reprodukálhatóak legyenek, akkor azt a `set.seed()` függvénnyel érhetjük el, ezzel "rögzítjük" a random szám generálás kezdőpontját.
+
+```{r set_seed}
+# Ha beállítjátok azonos értékre a seedet a saját gépeteken, azonos eredményt kell kapnotok
+set.seed(123)
+
+mean(rnorm(1000, 50, 20))
+mean(rnorm(1000, 50, 20))
+mean(rnorm(1000, 50, 20))
+```
+## Stringek kezelésére:
 
 ```{r szövegek}
 # keresés, csere:
@@ -153,51 +213,6 @@ lin_reg
 summary(lin_reg)
 ```
 
-Az R egyik nagy erőssége, hogy ha nem találjuk meg a szükséges statisztikai eljárást a felkínált függvények közt, megírhatjuk magunk is őket, illetve akár komolyabb programokat is készíthetünk a felkínált programozási alapelemekkel:
-
-- sokszor egymás után elvégeztethetjük a számítógéppel ugyanazt a feladatot:
-
-```{r szorzas}
-szorzas <- function(x, n){
-  eredmeny <- 0
-  for(i in seq(n)){
-    eredmeny <- eredmeny + x
-  }
-  return(eredmeny)
-}
-```
-
-- az eljárásban döntéseket hozhatunk bizonyos feltételek alapján
-
-```{r dontes}
-for(i in 1:20){
-  if(i %% 2 == 1){
-    pp <- "páratlan"
-  } else {
-    pp <- "páros"
-  }
-  
-  print(paste(i, ":", pp))
-}
-```
-
-*Feladat: Írjatok egy függvényt, ami 1-től 20-ig végignézi a számokat. Ha hárommal osztható, kiírja hogy `Fizz`, ha öttel, kiírja hogy `Buzz`, ha mindkettővel, kiírja hogy `FizzBuzz`.*
-
-```{r FizzBuzz, echo = FALSE, results = FALSE}
-for(i in 1:20){
-  r <- NULL
-  if(i %% 5 == 0 & i %% 3 == 0){
-    r <- "FizzBuzz"
-  } else if(i %% 3 == 0){
-    r <- "Fizz"
-  } else if(i %% 5 == 0){
-    r <-  "Buzz"
-  } else {
-    r <- i
-  }
-  print(r)
-}
-```
 
 
 ## Adatbeolvasás, kiírás
@@ -208,6 +223,10 @@ A adatokat a legtöbb esetben mi vagy mások nem a konzolba, vagy a terminálba 
 ```{r adatbeolvasás}
 
 # CSV
+rt_adat <- read.table("data/hungapminder.csv",
+                      header=TRUE,
+                      sep=";",
+                      dec=",")
 csv_adat <- read.csv2("data/hungapminder.csv")
 str(csv_adat)
 
@@ -229,6 +248,9 @@ Természetesen sok előkészítés, elemzés, újabb módosítás, újabb elemz�
 saveRDS(adatok,
         "data/sajat_adat.RDS")
 # csv-be:
+write.table("data/hungapminder.csv",
+            sep=";",
+            dec=",")
 write.csv2(adatok,
           "data/sajat_adat.csv")
 # stata, spss:
@@ -263,6 +285,13 @@ library(tidyverse)
 
 
 ## Házi feladat:
-Válasszatok egy tetszőleges adatforrást (csv vagy SPSS file ajánlott), írjatok egy függvényt, amivel kategorizáltok egy magas mérési szintű változót, illetve egy másikat, amivel recode-oltok egy nominális vagy ordinális változót. A kiinduló adatokat és a működő szkriptet küldjétek el egy zipben nekünk.
+
+1.: Válasszatok egy tetszőleges adatforrást (csv vagy SPSS file ajánlott)! Olvassátok be a megfelelő függvénnyel egy objektumba!
+
+2.: Válasszatok ki egy magas mérési szintű változót (pl. életkor). Készítsetek egy függvényt, ami a kiválasztott változó oszlopát kapja meg bemenetül, és általatok választott intervallumok alapján bekategorizálja azt. Például ha a függvény a `(21, 42, 65, 19)` értékeket kapja bemenetül, a kategóriahatárok pedig 20, 40 és 60, akkor a `(2,3,4,1)` értéket kapjátok vissza.
+
+3.: Válasszatokk i egy alacsony mérési szintű változót (pl iskolai végzettség). Írjatok gy függvényt, ami az egyes kategóriákat összevonja, és egy új kategorizálást ad vissza. Például az `c("MSc", "BA", "Érettségi", "Elemi")` értékekre az `c("felsőfokú", "felsőfokú", "középfokú", "alapfokú")` értékeket adja vissza.
+
+A kiinduló adatokat és a működő szkriptet küldjétek el egy zipben nekünk (`atajti@gmail.com`, `tiemka@gmail.com`).
 
 Jó munkát!
