@@ -88,7 +88,14 @@ Az R egyik nagy erőssége, hogy ha nem találjuk meg a szükséges statisztikai
 
 - sokszor egymás után elvégeztethetjük a számítógéppel ugyanazt a feladatot:
 
+![for loop](pictures/r_for_loop.jpg)
+
 ```{r szorzas}
+for(elem in vektor){
+  print(elem)
+}
+
+
 szorzas <- function(x, n){
   eredmeny <- 0
   for(i in seq(n)){
@@ -100,7 +107,22 @@ szorzas <- function(x, n){
 
 - az eljárásban döntéseket hozhatunk bizonyos feltételek alapján
 
+![if](pictures/r_decision_making.png)
+
 ```{r dontes}
+
+n <- 7
+if(n > 6){
+  "A megadott érték nagyobb 6-nál"
+} else {
+  "A megadott érték kisebb 6-nál"
+}
+
+ifelse(n > 6,
+       "A megadott érték nagyobb 6-nál",
+       "A megadott érték kisebb 6-nál")
+       
+       
 paros_e <- function(n){
   if(n %% 2 == 0){
     return("paros")
